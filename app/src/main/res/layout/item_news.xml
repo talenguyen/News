@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+  <TextView
+      android:id="@+id/source"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="8dp"
+      app:layout_constraintEnd_toStartOf="@+id/thumb"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="USA Today"
+      tools:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+  <TextView
+      android:id="@+id/title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="8dp"
+      android:layout_marginTop="8dp"
+      android:ellipsize="end"
+      android:lines="4"
+      android:maxLines="4"
+      app:layout_constraintEnd_toStartOf="@id/thumb"
+      app:layout_constraintStart_toStartOf="@id/source"
+      app:layout_constraintTop_toBottomOf="@id/source"
+      tools:text="Opioids kill kids too - through accidental overdose, suicide and homicide - USA TODAY"
+      tools:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+  <TextView
+      android:id="@+id/publish_at"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      app:layout_constraintStart_toStartOf="@+id/title"
+      app:layout_constraintTop_toBottomOf="@+id/title"
+      tools:text="7 hours ago"
+      tools:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+  <ImageView
+      android:id="@+id/thumb"
+      android:layout_width="88dp"
+      android:layout_height="88dp"
+      android:contentDescription="@null"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_image_black_24dp" />
+</android.support.constraint.ConstraintLayout>
