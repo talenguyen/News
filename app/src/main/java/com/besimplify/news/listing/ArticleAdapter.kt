@@ -16,6 +16,7 @@ data class Article(
   val source: String,
   val title: String,
   val thumbUrl: String,
+  val url: String,
   val publishAt: Date
 )
 
@@ -26,7 +27,8 @@ class ArticleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
   val publishAt: TextView = view.findViewById(R.id.publish_at)
 }
 
-class ArticleAdapter : RecyclerView.Adapter<ArticleViewHolder>() {
+class ArticleAdapter(private val navigator: (String) -> Unit) : RecyclerView.Adapter<ArticleViewHolder>() {
+
   private var articles: List<Article> = emptyList()
 
   fun setArticles(articleList: List<Article>) {
@@ -44,16 +46,19 @@ class ArticleAdapter : RecyclerView.Adapter<ArticleViewHolder>() {
   }
 
   override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-    val news = articles[position]
-    holder.source.text = news.source
-    holder.title.text = news.title
+    val article = articles[position]
 
-    val requestCreator = if (news.thumbUrl.isEmpty()) {
+    holder.itemView.setOnClickListener { navigator.invoke(article.url) }
+
+    holder.source.text = article.source
+    holder.title.text = article.title
+
+    val requestCreator = if (article.thumbUrl.isEmpty()) {
       Picasso.get()
         .load(R.drawable.ic_image_black_24dp)
     } else {
       Picasso.get()
-        .load(news.thumbUrl)
+        .load(article.thumbUrl)
     }
 
     requestCreator
@@ -61,7 +66,7 @@ class ArticleAdapter : RecyclerView.Adapter<ArticleViewHolder>() {
       .centerCrop()
       .into(holder.thumb)
 
-    holder.publishAt.text = formatPublishAt(holder.publishAt.context, news.publishAt)
+    holder.publishAt.text = formatPublishAt(holder.publishAt.context, article.publishAt)
   }
 
   private fun formatPublishAt(context: Context, publishAt: Date): String {

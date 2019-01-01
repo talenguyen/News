@@ -1,5 +1,6 @@
 package com.besimplify.news.listing
 
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.besimplify.news.R
 import com.besimplify.news.network.NewsServices
+import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -19,7 +21,10 @@ class ListingFragment : Fragment() {
   private val subs = CompositeDisposable()
 
   private lateinit var listNews: RecyclerView
-  private val newsAdapter = ArticleAdapter()
+  private val newsAdapter = ArticleAdapter { url ->
+    SimpleChromeCustomTabs.getInstance()
+      .navigateTo(Uri.parse(url), requireActivity())
+  }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     return layoutInflater.inflate(
@@ -46,6 +51,7 @@ class ListingFragment : Fragment() {
                 articleResponse.source.name,
                 articleResponse.title,
                 articleResponse.urlToImage ?: "",
+                articleResponse.url,
                 articleResponse.publishedAt
               )
             }

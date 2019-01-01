@@ -8,5 +8,5 @@ class ArticlesResponse(
   @Json(name = "totalResults")
   val total: Int = 0,
   @Json(name = "articles")
-  val articles: List<ArticleReponse> = emptyList()
+  val articles: List<ArticleResponse> = emptyList()
 )
