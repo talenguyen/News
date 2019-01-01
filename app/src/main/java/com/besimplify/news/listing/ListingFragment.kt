@@ -8,12 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.besimplify.news.R
-import java.text.SimpleDateFormat
+import com.besimplify.news.network.NewsServices
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class ListingFragment : Fragment() {
 
+  private val newsServices by lazy { NewsServices.make(requireContext()) }
+  private val subs = CompositeDisposable()
+
   private lateinit var listNews: RecyclerView
-  private val newsAdapter = NewsAdapter()
+  private val newsAdapter = ArticleAdapter()
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     return layoutInflater.inflate(
@@ -29,23 +35,28 @@ class ListingFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    newsAdapter.setNewsList(
-      listOf(
-        News(
-          "Eonline.com",
-          "Inside Angelina Jolie's Complicated Relationship With Dad Jon Voight - E! NEWS",
-          "https://akns-images.eonline.com/eol_images/Entire_Site/20181128/rs_600x600-181228120039-600-john-voight-angelina-jolie-land-blood-honey.jpg?fit=around|600:467&crop=600:467;center,top&output-quality=90",
-          parseTime("2018-12-29T11:00:00Z")
-        ),
-        News(
-          "Screenrant.com",
-          "Aquaman Director Doesn't Care if It Feels 'Cheesy' | ScreenRant - Screen Rant",
-          "https://static0.srcdn.com/wordpress/wp-content/uploads/2018/12/Aquaman-and-Mera-Movie-Poster.jpg",
-          parseTime("2018-12-29T06:44:38Z")
-        )
-      )
-    )
+    subs.add(newsServices.topHeadlines()
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribe(
+        {
+          val newsList = it.articles
+            .map { articleResponse ->
+              Article(
+                articleResponse.source.name,
+                articleResponse.title,
+                articleResponse.urlToImage ?: "",
+                articleResponse.publishedAt
+              )
+            }
+          newsAdapter.setArticles(newsList)
+        },
+        { t: Throwable? -> t?.printStackTrace() }
+      ))
   }
 
-  private fun parseTime(timeString: String) = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(timeString).time
+  override fun onDestroy() {
+    super.onDestroy()
+    subs.clear()
+  }
 }
