@@ -3,6 +3,7 @@ package com.besimplify.news.listing
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -23,6 +24,14 @@ class ListingFragment : Fragment() {
   private lateinit var listNews: RecyclerView
   private val newsAdapter = ArticleAdapter { url ->
     SimpleChromeCustomTabs.getInstance()
+      .withIntentCustomizer { builder ->
+        builder.withToolbarColor(
+          ContextCompat.getColor(
+            requireContext(),
+            R.color.colorPrimary
+          )
+        )
+      }
       .navigateTo(Uri.parse(url), requireActivity())
   }
 
