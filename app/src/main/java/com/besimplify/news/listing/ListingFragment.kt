@@ -15,6 +15,7 @@ import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.Date
 
 class ListingFragment : Fragment() {
 
@@ -25,12 +26,14 @@ class ListingFragment : Fragment() {
   private val newsAdapter = ArticleAdapter { url ->
     SimpleChromeCustomTabs.getInstance()
       .withIntentCustomizer { builder ->
-        builder.withToolbarColor(
-          ContextCompat.getColor(
-            requireContext(),
-            R.color.colorPrimary
+        builder
+          .withToolbarColor(
+            ContextCompat.getColor(
+              requireContext(),
+              R.color.colorPrimary
+            )
           )
-        )
+          .withUrlBarHiding()
       }
       .navigateTo(Uri.parse(url), requireActivity())
   }
@@ -55,13 +58,14 @@ class ListingFragment : Fragment() {
       .subscribe(
         {
           val newsList = it.articles
+            .filter { articleResponse -> articleResponse.title != null && articleResponse.url != null }
             .map { articleResponse ->
               Article(
-                articleResponse.source.name,
-                articleResponse.title,
+                articleResponse.source?.name ?: "",
+                articleResponse.title ?: "",
                 articleResponse.urlToImage ?: "",
-                articleResponse.url,
-                articleResponse.publishedAt
+                articleResponse.url ?: "",
+                articleResponse.publishedAt ?: Date()
               )
             }
           newsAdapter.setArticles(newsList)
