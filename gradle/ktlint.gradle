@@ -1,0 +1,46 @@
+// kotlin-gradle-plugin must be applied for configuration below to work
+// (see https://kotlinlang.org/docs/reference/using-gradle.html)
+
+repositories {
+    jcenter()
+}
+
+configurations {
+    ktlint
+}
+
+dependencies {
+    ktlint "com.github.shyiko:ktlint:0.29.0"
+    // additional 3rd party ruleset(s) can be specified here
+    // just add them to the classpath (e.g. ktlint 'groupId:artifactId:version') and
+    // ktlint will pick them up
+}
+
+def outputDir = "${project.buildDir}/reports/ktlint/"
+def outputFile = "${outputDir}ktlint-checkstyle-report.xml"
+def inputFiles = project.fileTree(dir: "src", include: "**/*.kt")
+
+tasks.register("ktlint", JavaExec) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+    group = "verification"
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args = [
+            "--reporter=plain",
+            "--reporter=checkstyle,output=${outputFile}",
+            "**/src/**/*.kt"
+    ]
+    // to generate report in checkstyle format prepend following args:
+    // "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
+    // see https://github.com/shyiko/ktlint#usage for more
+}
+
+tasks.register("ktlintFormat", JavaExec) {
+    group = "verification"
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args "-F", "**/src/**/*.kt"
+}
