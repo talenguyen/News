@@ -38,7 +38,11 @@ class ListingFragment : Fragment() {
       .navigateTo(Uri.parse(url), requireActivity())
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+  ): View? {
     return layoutInflater.inflate(
       R.layout.fragment_listing,
       container,

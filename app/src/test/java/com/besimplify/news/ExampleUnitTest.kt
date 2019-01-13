@@ -2,7 +2,7 @@ package com.besimplify.news
 
 import org.junit.Test
 
-import org.junit.Assert.*
+import org.junit.Assert.* // ktlint-disable no-wildcard-imports
 
 /**
  * Example local unit test, which will execute on the development machine (host).
