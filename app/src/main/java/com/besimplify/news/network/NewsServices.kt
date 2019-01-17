@@ -1,6 +1,7 @@
 package com.besimplify.news.network
 
 import android.content.Context
+import com.besimplify.news.BuildConfig
 import com.besimplify.news.extensions.isConnected
 import com.besimplify.news.network.response.ArticlesResponse
 import com.squareup.moshi.Moshi
@@ -18,14 +19,13 @@ import retrofit2.http.Headers
 import retrofit2.http.Query
 
 private const val BASE_URL = "https://newsapi.org/"
-private const val API_KEY = "bb618dcf69f34da6bcaf210001315065"
 
 interface NewsServices {
 
   @Headers(
     value = [
       "Accept: application/json;charset=utf-8",
-      "x-api-key: $API_KEY"
+      "x-api-key: ${BuildConfig.NEWS_API_KEY}"
     ]
   )
   @GET("v2/top-headlines")

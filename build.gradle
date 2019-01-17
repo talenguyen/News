@@ -25,3 +25,7 @@ subprojects {
         }
     }
 }
+
+def propOrEmpty(String name) {
+    return hasProperty(name) ? getProperty(name) : ''
+}
