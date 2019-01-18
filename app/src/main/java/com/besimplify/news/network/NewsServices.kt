@@ -22,12 +22,7 @@ private const val BASE_URL = "https://newsapi.org/"
 
 interface NewsServices {
 
-  @Headers(
-    value = [
-      "Accept: application/json;charset=utf-8",
-      "x-api-key: ${BuildConfig.NEWS_API_KEY}"
-    ]
-  )
+  @Headers("Accept: application/json;charset=utf-8")
   @GET("v2/top-headlines")
   fun topHeadlines(
     @Query("country") query: String = "us",
@@ -80,6 +75,7 @@ interface NewsServices {
           chain.proceed(request)
         }
         .addInterceptor(HttpLoggingInterceptor().setLevel(Level.BODY))
+        .addInterceptor(ApiKeyInterceptor(BuildConfig.NEWS_API_KEY))
         .build()
 
       val moshi = Moshi.Builder()
