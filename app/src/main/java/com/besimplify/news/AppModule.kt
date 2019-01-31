@@ -11,4 +11,10 @@ object AppModule {
   @Provides
   @Named("NEWS_API_KEY")
   fun provideApiKey(): String = BuildConfig.NEWS_API_KEY
+
+  @JvmStatic
+  @Provides
+  @Named("DEBUG")
+  fun provideDebugFlag(): Boolean = BuildConfig.DEBUG
+
 }

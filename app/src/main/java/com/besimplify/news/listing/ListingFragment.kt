@@ -16,6 +16,7 @@ import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.util.Date
 import javax.inject.Inject
 
@@ -59,6 +60,7 @@ class ListingFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     App.getAppComponent(requireActivity()).inject(this)
+    Timber.d("onViewCreated")
     subs.add(newsServices.topHeadlines()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())

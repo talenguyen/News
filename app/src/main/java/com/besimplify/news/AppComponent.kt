@@ -8,9 +8,14 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, NetworkModule::class])
+@Component(modules = [
+  AppModule::class,
+  AppModuleBinds::class,
+  NetworkModule::class
+])
 interface AppComponent {
 
+  fun inject(ignored: App)
   fun inject(ignored: ListingFragment)
 
   @Component.Builder
