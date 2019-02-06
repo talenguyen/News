@@ -8,14 +8,14 @@ jobs:
     working_directory: ~/code
 
     docker:
-      # specify the version you desire here
-      # - image: circleci/openjdk:8-jdk
-      - image: circleci/android:api-27-alpha
+    # specify the version you desire here
+    # - image: circleci/openjdk:8-jdk
+    - image: circleci/android:api-27-alpha
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
+    # Specify service dependencies here if necessary
+    # CircleCI maintains a library of pre-built images
+    # documented at https://circleci.com/docs/2.0/circleci-images/
+    # - image: circleci/postgres:9.4
 
 
     environment:
@@ -25,30 +25,30 @@ jobs:
       TERM: dumb
 
     steps:
-      - checkout
+    - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+    # Download and cache dependencies
+    - restore_cache:
+        keys: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}-{{ checksum  "gradle/wrapper/gradle-wrapper.properties" }}
 
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
+    - run:
+        name: Download Dependencies
+        command: ./gradlew androidDependencies
 
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+    - save_cache:
+        paths:
+        - ~/.gradle
+        key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}-{{ checksum  "gradle/wrapper/gradle-wrapper.properties" }}
 
-      # run checks!
-      - run:
-          name: run lint check
-          command: ./gradlew lintDebug
+    # run checks!
+    - run:
+        name: run lint check
+        command: ./gradlew lintDebug
 
-      - run:
-          name: run ktlint check
-          command: ./gradlew ktlint
+    - run:
+        name: run ktlint check
+        command: ./gradlew ktlint
 
-      - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-          path: app/build/reports
-          destination: reports
+    - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+        path: app/build/reports
+        destination: reports
