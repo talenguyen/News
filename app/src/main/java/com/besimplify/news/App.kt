@@ -10,7 +10,7 @@ class App : Application() {
     fun getAppComponent(context: Context): AppComponent = (context.applicationContext as App).appComponent
   }
 
-  private lateinit var appComponent: AppComponent
+  internal lateinit var appComponent: AppComponent
 
   @Inject lateinit var appInitializers: Set<@JvmSuppressWildcards AppInitializer>
 
