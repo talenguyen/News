@@ -16,5 +16,4 @@ object AppModule {
   @Provides
   @Named("DEBUG")
   fun provideDebugFlag(): Boolean = BuildConfig.DEBUG
-
 }
