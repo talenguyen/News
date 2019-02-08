@@ -66,6 +66,10 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.21'
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    implementation 'com.airbnb.android:epoxy:3.3.0'
+    // Add the annotation processor if you are using Epoxy's annotations (recommended)
+    kapt 'com.airbnb.android:epoxy-processor:3.3.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation ('com.android.support.test:runner:1.0.2')  {
         exclude group: 'com.android.support'
