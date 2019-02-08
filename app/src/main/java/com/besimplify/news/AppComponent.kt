@@ -1,7 +1,7 @@
 package com.besimplify.news
 
 import android.content.Context
-import com.besimplify.news.listing.ListingFragment
+import com.besimplify.news.features.articles.ArticlesFragment
 import com.besimplify.news.network.NetworkModule
 import dagger.BindsInstance
 import dagger.Component
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
   fun inject(ignored: App)
-  fun inject(ignored: ListingFragment)
+  fun inject(ignored: ArticlesFragment)
 
   @Component.Builder
   interface Builder {

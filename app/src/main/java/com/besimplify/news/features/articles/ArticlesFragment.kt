@@ -1,4 +1,4 @@
-package com.besimplify.news.listing
+package com.besimplify.news.features.articles
 
 import android.net.Uri
 import android.os.Bundle
@@ -20,7 +20,7 @@ import timber.log.Timber
 import java.util.Date
 import javax.inject.Inject
 
-class ListingFragment : Fragment() {
+class ArticlesFragment : Fragment() {
 
   @Inject lateinit var newsServices: NewsServices
 

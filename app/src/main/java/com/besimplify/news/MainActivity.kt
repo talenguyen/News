@@ -2,7 +2,7 @@ package com.besimplify.news
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.besimplify.news.listing.ListingFragment
+import com.besimplify.news.features.articles.ArticlesFragment
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     if (savedInstanceState == null) {
       supportFragmentManager.beginTransaction()
-        .replace(R.id.container, ListingFragment())
+        .replace(R.id.container, ArticlesFragment())
         .commit()
     }
   }
