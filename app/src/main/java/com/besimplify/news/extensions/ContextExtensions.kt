@@ -9,5 +9,5 @@ fun Context.dip(size: Int): Int = (resources.displayMetrics.density * size).toIn
 fun Context.isConnected(): Boolean {
   val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
   val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-  return activeNetwork?.isConnectedOrConnecting == true
+  return activeNetwork?.isConnected ?: false
 }

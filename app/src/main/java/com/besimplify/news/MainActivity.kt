@@ -1,23 +1,25 @@
 package com.besimplify.news
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.besimplify.news.listing.ListingFragment
+import com.besimplify.news.features.articles.ArticlesFragment
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-  private val chromeCustomTabs: SimpleChromeCustomTabs by lazy { SimpleChromeCustomTabs.getInstance() }
+  @Inject lateinit var chromeCustomTabs: SimpleChromeCustomTabs
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    SimpleChromeCustomTabs.initialize(this)
+
+    getAppComponent().inject(this)
 
     setContentView(R.layout.activity_main)
 
     if (savedInstanceState == null) {
       supportFragmentManager.beginTransaction()
-        .replace(R.id.container, ListingFragment())
+        .replace(R.id.container, ArticlesFragment())
         .commit()
     }
   }

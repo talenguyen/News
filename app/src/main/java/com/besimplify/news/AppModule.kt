@@ -1,8 +1,10 @@
 package com.besimplify.news
 
+import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 object AppModule {
@@ -16,4 +18,9 @@ object AppModule {
   @Provides
   @Named("DEBUG")
   fun provideDebugFlag(): Boolean = BuildConfig.DEBUG
+
+  @Provides
+  @Singleton
+  @JvmStatic
+  fun provideSimpleChromeCustomTabs(): SimpleChromeCustomTabs = SimpleChromeCustomTabs.getInstance()
 }
