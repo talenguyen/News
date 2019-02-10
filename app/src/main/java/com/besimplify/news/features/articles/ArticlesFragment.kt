@@ -2,21 +2,21 @@ package com.besimplify.news.features.articles
 
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.besimplify.news.R
 import com.besimplify.news.extensions.withModels
 import com.besimplify.news.getAppComponent
 import com.besimplify.news.network.NewsServices
+import com.besimplify.news.view.articleView
 import com.novoda.simplechromecustomtabs.SimpleChromeCustomTabs
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 class ArticlesFragment : Fragment() {
@@ -28,20 +28,6 @@ class ArticlesFragment : Fragment() {
 
   private val subs = CompositeDisposable()
   private lateinit var articlesRecyclerView: EpoxyRecyclerView
-  private val newsAdapter = ArticleAdapter { url ->
-    simpleChromeCustomTabs
-      .withIntentCustomizer { builder ->
-        builder
-          .withToolbarColor(
-            ContextCompat.getColor(
-              requireContext(),
-              R.color.colorPrimary
-            )
-          )
-          .withUrlBarHiding()
-      }
-      .navigateTo(Uri.parse(url), requireActivity())
-  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -57,11 +43,11 @@ class ArticlesFragment : Fragment() {
     }
   }
 
+  @Suppress("RedundantLambdaArrow")
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     getAppComponent().inject(this)
 
-    Timber.d("onViewCreated")
     subs.add(newsServices.topHeadlines()
       .subscribeOn(Schedulers.io())
       .observeOn(AndroidSchedulers.mainThread())
@@ -71,6 +57,27 @@ class ArticlesFragment : Fragment() {
             it.articles
               .filter { articleResponse -> articleResponse.title != null && articleResponse.url != null }
               .forEach {
+                articleView {
+                  id(it.url)
+                  title(it.title.orEmpty())
+                  source(it.source?.name.orEmpty())
+                  thumbnailUrl(it.urlToImage.orEmpty())
+                  publishTime(it.publishedAt?.time ?: System.currentTimeMillis())
+                  onClickListener { _ ->
+                    simpleChromeCustomTabs
+                      .withIntentCustomizer { builder ->
+                        builder
+                          .withToolbarColor(
+                            ContextCompat.getColor(
+                              requireContext(),
+                              R.color.colorPrimary
+                            )
+                          )
+                          .withUrlBarHiding()
+                      }
+                      .navigateTo(Uri.parse(it.url), requireActivity())
+                  }
+                }
               }
           }
         },

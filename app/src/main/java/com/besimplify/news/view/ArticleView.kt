@@ -1,10 +1,10 @@
 package com.besimplify.news.view
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.airbnb.epoxy.CallbackProp
 import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
@@ -17,11 +17,12 @@ import kotlin.LazyThreadSafetyMode.NONE
 @ModelView(
   defaultLayout = R.layout.view_article
 )
-class ArticleView(
+class ArticleView @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null,
   defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
+
   private val thumb: ImageView by lazy(NONE) { findViewById<ImageView>(R.id.thumb) }
   private val source: TextView by lazy(NONE) { findViewById<TextView>(R.id.source) }
   private val title: TextView by lazy(NONE) { findViewById<TextView>(R.id.title) }
